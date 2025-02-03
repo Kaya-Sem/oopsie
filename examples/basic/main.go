@@ -26,4 +26,10 @@ func main() {
 	defaultOops.IndicatorColors(oopsie.BLACK, oopsie.BRIGHT_RED)
 	fmt.Println(defaultOops.Render()) // Output: error: an error occurred
 
+	fmt.Println(oopsie.CreateOopsie().IndicatorColors(oopsie.BRIGHT_GREEN, oopsie.BLACK).IndicatorMessage("INFO").Title("Handshake initialised. Awaiting response from upstream service").Error(fmt.Errorf("Transaction ID: 0x7F3A9B")).Render())
+
+	fmt.Println(oopsie.CreateOopsie().IndicatorColors(oopsie.WHITE, oopsie.BLUE).IndicatorMessage("INFO").Title("Handshake initialised. Awaiting response from upstream service").Error(fmt.Errorf("Transaction ID: 0x7F3A9B")).Render())
+
+	fmt.Println(oopsie.CreateOopsie().IndicatorColors(oopsie.BRIGHT_WHITE, oopsie.RED).IndicatorMessage("504").Title("API Timeout").Error(fmt.Errorf("Connection timeout occured. Perhaps your time/date is too far into the future?")).Render())
+
 }
