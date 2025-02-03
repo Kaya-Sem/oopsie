@@ -6,20 +6,17 @@ import (
 )
 
 func main() {
-	// Create an empty oopsie and customize it
-	customOops := oopsie.CreateOopsie()
-	customOops.SetTitle("Database Connection Failed")
-	customOops.SetIndicatorMessage("CRITICAL")
-	fmt.Println(customOops.Render()) // Output: CRITICAL: Database Connection Failed
+	// basic example
 
-	fmt.Println()
+	fmt.Println(
+		oopsie.CreateOopsie().Title("Database connection failed.").IndicatorMessage("SQL").Render())
 
 	// Create an empty oopsie and customize it
 	customOops2 := oopsie.CreateOopsie()
 	customOops2.SetIndicatorColors(oopsie.BLACK, oopsie.GREEN)
 	customOops2.DisableIndicator(false)
-	customOops2.SetIndicatorMessage("200 OK")
-	customOops2.SetTitle("connection succesfull")
+	customOops2.IndicatorMessage("200 OK")
+	customOops2.Title("connection succesfull")
 	fmt.Println(customOops2.Render()) // Output: CRITICAL: Database Connection Failed
 
 	fmt.Println()
@@ -29,7 +26,4 @@ func main() {
 	defaultOops.SetIndicatorColors(oopsie.BLACK, oopsie.BRIGHT_RED)
 	fmt.Println(defaultOops.Render()) // Output: error: an error occurred
 
-	// Disable the indicator
-	customOops.DisableIndicator(false)
-	fmt.Println(customOops.Render()) // Output: Database Connection Failed
 }

@@ -81,23 +81,23 @@ type Oopsie struct {
 }
 
 func (o *Oopsie) Render() string {
-	message := fmt.Sprintf("%s%s", o.indicator.buildIndicator(), o.title)
+	message := fmt.Sprintf("%s%s\n", o.indicator.buildIndicator(), o.title)
 	return message
 }
 
-func (o *Oopsie) SetTitle(title string) *Oopsie {
+func (o *Oopsie) Title(title string) *Oopsie {
 	o.title = title
 
 	return o
 }
 
-func (o *Oopsie) SetIndicatorMessage(content string) *Oopsie {
+func (o *Oopsie) IndicatorMessage(content string) *Oopsie {
 	o.indicator.content = content
 
 	return o
 }
 
-func (o *Oopsie) SetIndicatorColors(fg, bg string) *Oopsie {
+func (o *Oopsie) IndicatorColors(fg, bg string) *Oopsie {
 	o.indicator.foregroundColor = fg
 	o.indicator.backgroundColor = bg
 
@@ -110,7 +110,7 @@ func (o *Oopsie) DisableIndicator(status bool) *Oopsie {
 	return o
 }
 
-func (o *Oopsie) SetError(err error) *Oopsie {
+func (o *Oopsie) Error(err error) *Oopsie {
 	o.err = err
 
 	return o
