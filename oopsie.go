@@ -81,7 +81,7 @@ type Oopsie struct {
 }
 
 func (o *Oopsie) Render() string {
-	message := fmt.Sprintf("%s%s\n", o.indicator.buildIndicator(), o.title)
+	message := fmt.Sprintf("%s%s\n%s\n", o.indicator.buildIndicator(), o.title, o.err)
 	return message
 }
 
