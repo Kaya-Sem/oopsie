@@ -4,14 +4,22 @@ import "fmt"
 
 const (
 	// Base colors that will be converted to FG/BG variants internally
-	BLACK  = "BLACK"
-	RED    = "RED"
-	GREEN  = "GREEN"
-	YELLOW = "YELLOW"
-	BLUE   = "BLUE"
-	PURPLE = "PURPLE"
-	CYAN   = "CYAN"
-	WHITE  = "WHITE"
+	BLACK         = "BLACK"
+	RED           = "RED"
+	GREEN         = "GREEN"
+	YELLOW        = "YELLOW"
+	BLUE          = "BLUE"
+	PURPLE        = "PURPLE"
+	CYAN          = "CYAN"
+	WHITE         = "WHITE"
+	BRIGHT_BLACK  = "BRIGHT_BLACK"
+	BRIGHT_RED    = "BRIGHT_RED"
+	BRIGHT_GREEN  = "BRIGHT_GREEN"
+	BRIGHT_YELLOW = "BRIGHT_YELLOW"
+	BRIGHT_BLUE   = "BRIGHT_BLUE"
+	BRIGHT_PURPLE = "BRIGHT_PURPLE"
+	BRIGHT_CYAN   = "BRIGHT_CYAN"
+	BRIGHT_WHITE  = "BRIGHT_WHITE"
 )
 
 // Internal color code mapping
@@ -19,14 +27,22 @@ var colorCodes = map[string]struct {
 	fg string
 	bg string
 }{
-	BLACK:  {fg: "\033[30m", bg: "\033[40m"},
-	RED:    {fg: "\033[31m", bg: "\033[41m"},
-	GREEN:  {fg: "\033[32m", bg: "\033[42m"},
-	YELLOW: {fg: "\033[33m", bg: "\033[43m"},
-	BLUE:   {fg: "\033[34m", bg: "\033[44m"},
-	PURPLE: {fg: "\033[35m", bg: "\033[45m"},
-	CYAN:   {fg: "\033[36m", bg: "\033[46m"},
-	WHITE:  {fg: "\033[37m", bg: "\033[47m"},
+	BLACK:         {fg: "\033[30m", bg: "\033[40m"},
+	RED:           {fg: "\033[31m", bg: "\033[41m"},
+	GREEN:         {fg: "\033[32m", bg: "\033[42m"},
+	YELLOW:        {fg: "\033[33m", bg: "\033[43m"},
+	BLUE:          {fg: "\033[34m", bg: "\033[44m"},
+	PURPLE:        {fg: "\033[35m", bg: "\033[45m"},
+	CYAN:          {fg: "\033[36m", bg: "\033[46m"},
+	WHITE:         {fg: "\033[37m", bg: "\033[47m"},
+	BRIGHT_BLACK:  {fg: "\033[90m", bg: "\033[100m"},
+	BRIGHT_RED:    {fg: "\033[91m", bg: "\033[101m"},
+	BRIGHT_GREEN:  {fg: "\033[92m", bg: "\033[102m"},
+	BRIGHT_YELLOW: {fg: "\033[93m", bg: "\033[103m"},
+	BRIGHT_BLUE:   {fg: "\033[94m", bg: "\033[104m"},
+	BRIGHT_PURPLE: {fg: "\033[95m", bg: "\033[105m"},
+	BRIGHT_CYAN:   {fg: "\033[96m", bg: "\033[106m"},
+	BRIGHT_WHITE:  {fg: "\033[97m", bg: "\033[107m"},
 }
 
 const RESET = "\033[0m"
@@ -34,8 +50,8 @@ const RESET = "\033[0m"
 type indicator struct {
 	isShown         bool
 	content         string
-	foregroundColor string // Now stores simple color name (e.g., "RED")
-	backgroundColor string // Now stores simple color name (e.g., "WHITE")
+	foregroundColor string
+	backgroundColor string
 }
 
 func (i *indicator) buildIndicator() string {
@@ -55,7 +71,7 @@ func (i *indicator) buildIndicator() string {
 		}
 	}
 
-	return fmt.Sprintf("%s%s %s", colorCode, i.content, RESET)
+	return fmt.Sprintf("%s %s %s ", colorCode, i.content, RESET)
 }
 
 type Oopsie struct {
@@ -69,27 +85,35 @@ func (o *Oopsie) Render() string {
 	return message
 }
 
-func (o *Oopsie) SetTitle(title string) {
+func (o *Oopsie) SetTitle(title string) *Oopsie {
 	o.title = title
+
+	return o
 }
 
-func (o *Oopsie) SetIndicatorContent(content string) {
+func (o *Oopsie) SetIndicatorMessage(content string) *Oopsie {
 	o.indicator.content = content
+
+	return o
 }
 
-func (o *Oopsie) SetIndicatorColors(fg, bg string) {
+func (o *Oopsie) SetIndicatorColors(fg, bg string) *Oopsie {
 	o.indicator.foregroundColor = fg
 	o.indicator.backgroundColor = bg
+
+	return o
 }
 
-func (o *Oopsie) DisableIndicator() {
-	o.indicator.isShown = false
+func (o *Oopsie) DisableIndicator(status bool) *Oopsie {
+	o.indicator.isShown = !status
+
+	return o
 }
 
-func CreateEmptyOopsie() *Oopsie {
-	oops := new(Oopsie)
-	oops.indicator.isShown = true
-	return oops
+func (o *Oopsie) SetError(err error) *Oopsie {
+	o.err = err
+
+	return o
 }
 
 func CreateOopsie() *Oopsie {
@@ -97,19 +121,11 @@ func CreateOopsie() *Oopsie {
 		indicator: indicator{
 			content:         "ERROR",
 			isShown:         true,
-			foregroundColor: WHITE, // Now using simple color name
-			backgroundColor: RED,   // Now using simple color name
+			foregroundColor: BLACK,
+			backgroundColor: RED,
 		},
-		title: "an error occurred",
+		title: "this is a default error message",
 		err:   fmt.Errorf("something went wrong"),
 	}
 	return &oops
-}
-
-func (o *Oopsie) Throw() {
-	// Implementation here
-}
-
-func throwOopsie(title string, err error) {
-	// Implementation here
 }
